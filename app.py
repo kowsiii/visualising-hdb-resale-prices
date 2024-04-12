@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, render_template_string, request
 import json
 import pandas as pd
 from datetime import datetime, date
@@ -26,11 +26,11 @@ def prediction():
 
 @app.route('/amenities')
 def amenities():
-    return render_template('tableau.html')
+    return render_template('amenities.html')
 
 @app.route('/amenities1')
 def amenities1():
-    return render_template('tableau1.html')
+    return render_template('amenities1.html')
 
 @app.route('/', methods = ['GET'])
 def map():
@@ -79,6 +79,17 @@ def submit():
         data = request.form['data']
         # Process the data here
         return 'Data received: ' + data
+
+def render_template_with_active_tab(template_name, active_tab):
+    # Read the template content
+    with app.open_resource(f'templates/{template_name}') as f:
+        template_content = f.read().decode('utf-8')
+
+    # Add the active_tab snippet at the end
+    template_content += f"\n{{% set active_tab = '{active_tab}' %}}"
+
+    # Render the modified template
+    return render_template_string(template_content)
 
 if __name__ == '__main__':
     app.run(debug=True)
