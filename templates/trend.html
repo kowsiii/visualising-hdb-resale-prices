@@ -1147,6 +1147,7 @@ const horizontalGridlines = svg
   .selectAll("yGrid")
   .data(y.ticks().slice(1))
   .join("line")
+  .attr("class", "gridline")
   .attr("x1", 0)
   .attr("x2", width)
   .attr("y1", (d) => y(d))
@@ -1273,13 +1274,24 @@ function update(selectedGroup) {
     .duration(1000)
     .attr("d", line);
 
-  // Update horizontal gridlines
-  horizontalGridlines
-    // .data(y.ticks().slice(1))
-    .transition()
-    .duration(1000)
-    .attr("y1", (d) => y(d))
-    .attr("y2", (d) => y(d));
+    svg.selectAll("line.gridline")
+    .data(y.ticks().slice(1))
+    .join(
+      enter => enter.append("line")
+        .attr("class", "gridline")
+        .attr("x1", 0)
+        .attr("x2", width)
+        .attr("y1", (d) => y(d))
+        .attr("y2", (d) => y(d))
+        .attr("stroke", "#e0e0e0")
+        .attr("stroke-width", 1)
+        .transition()
+        .duration(1000)
+        .delay((d, i) => i * 1000),
+      update => update.transition().duration(1000)
+        .attr("y1", (d) => y(d))
+        .attr("y2", (d) => y(d))
+    );
 
   // Update listening rectangle
   listeningRect.on("mousemove", function (event) {
