@@ -1285,12 +1285,11 @@ function update(selectedGroup) {
         .attr("y2", (d) => y(d))
         .attr("stroke", "#e0e0e0")
         .attr("stroke-width", 1)
-        .transition()
-        .duration(1000)
-        .delay((d, i) => i * 1000),
-      update => update.transition().duration(1000)
+        .call(enter => enter.transition().duration(1000)
+          .delay((d, i) => i * 50)),
+      update => update.call(update => update.transition().duration(1000)
         .attr("y1", (d) => y(d))
-        .attr("y2", (d) => y(d))
+        .attr("y2", (d) => y(d)))
     );
 
   // Update listening rectangle
@@ -1316,11 +1315,11 @@ function update(selectedGroup) {
     tooltip
       .style("display", "block")
       .style("left", `${xPos + 100}px`)
-      .style("top", `${yPos + 120}px`)
+      .style("top", `${yPos + 100}px`)
       .html(
-        `<strong>Year:</strong> ${d.year.toString()}<br><strong>Median Resale Price:</strong> ${
-          "$" + d.medianPrice
-        }`
+        `<strong>Town:</strong> ${selectedGroup}<br>
+        <strong>Year:</strong> ${d.year.toString()}<br>
+        <strong>Median Resale Price:</strong> ${"$" + d.medianPrice}`
       );
 
     listeningRect.on("mouseleave", function () {
@@ -1372,11 +1371,12 @@ listeningRect.on("mousemove", function (event) {
   tooltip
     .style("display", "block")
     .style("left", `${xPos + 100}px`)
-    .style("top", `${yPos + 120}px`)
+    .style("top", `${yPos + 100}px`)
     .html(
-      `<strong>Year:</strong> ${d.year.toString()}<br><strong>Median Resale Price:</strong> ${
-        "$" + d.medianPrice
-      }`
+      `
+      <strong>Town:</strong> ANG MO KIO<br>
+      <strong>Year:</strong> ${d.year.toString()}<br>
+      <strong>Median Resale Price:</strong> ${"$" + d.medianPrice}`
     );
 
   listeningRect.on("mouseleave", function () {
