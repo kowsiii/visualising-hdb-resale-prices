@@ -95,7 +95,9 @@
   ></script>
   {% block head %}{% endblock %}
 </head>
+
 <body>
+  <div>
   <ul class="nav nav-tabs">
     <li class="nav-item">
       <a class="nav-link {% if active_tab == 'map' %}active{% endif %}" href="/">Map</a>
@@ -115,27 +117,7 @@
       <a class="nav-link clickable {% if active_tab == 'amenities1' %}active{% endif %}" href="/amenities1">Amenities (Map)</a>
     </li>
   </ul>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-12" id="filter"></div>
-    </div>
-    <div class="row">
-      <div class="col-md-10">
-        <div class="row">
-          <div class="col-md-12" id="race_graph"></div>
-        </div>
-        <div class="row">
-          <div class="col-md-4" id="pie"></div>
-          <div class="col-md-6" id="race_graph_origin"></div>
-        </div>
-      </div>
-      <div class="col-md-2" id="json"></div>
-    </div>
 
-    <div class="row">
- 
-    </div>
-  </div>
-
+</div>
   {% block content %}{% endblock %}
 </body>
