@@ -241,21 +241,15 @@
         </select>
         
         <select id="town" name="town">
-            {% if town == '' or town == None%}
-            
-            <option class = "aligns" value="" disabled selected>
-                Select Town 
-            </option>
-            {% else %}
-            <option class = "aligns" value="" disabled selected>{{town}}</option>
-            {%endif%}
             {% for town in towns %}
-                {% if town == '' %}
-                <option value=""> Select Town </option>
-                {%else%}
-                <option value="{{ town }}">{{ town }}</option>
-                {% endif %}
-            {% endfor %}
+            {% if town == '' %}
+                <option value="" class = "aligns">Select Town</option>
+            {% else %}
+            <option class = "aligns" value="{{ town }}" {% if town|string() == selected_town %}selected{% endif %}>
+                {{ town }}
+            </option>
+            {% endif %}
+        {% endfor %}
         </select>
 
         <select id="storeyRange" name="storeyRange" >
@@ -320,6 +314,9 @@
             <img id="img" src="{{ url_for('static', filename='images/image4.png') }}" style="display: inline-block; vertical-align: middle;">
             <h5 class = "y"> Closest Hospital: </h5>
             <p class= "info" id = "hosp" class = "x"> </p>
+            <img id="img" src="{{ url_for('static', filename='images/image4.png') }}" style="display: inline-block; vertical-align: middle;">
+            <h5 class = "y"> Closest Mall: </h5>
+            <p class= "info" id = "mall" class = "x"> </p>
 
             </div>
         </div>
@@ -398,6 +395,8 @@
             var sch_distance = item['Closest School distance']
             var hosp = item['Closest Healthcare']
             var hosp_distance = item['Closest Healthcare distance']
+            var mall = item['Closest Mall']
+            var mall_distance = item['Closest Mall distance']
             var divToHide = document.getElementById('infoDiv');
             var divToShow = document.getElementById('showdiv');
             // Bind the popup with the content
@@ -414,7 +413,7 @@
                     document.getElementById('mrt').innerHTML = mrt + '</br> ' + parseFloat(mrt_distance.toFixed(3)) + "Km away";
                     document.getElementById('sch').innerHTML = sch + '</br>' + parseFloat(sch_distance.toFixed(3)) + "Km away";
                     document.getElementById('hosp').innerHTML = hosp + '</br>' + parseFloat(hosp_distance.toFixed(3)) + "Km away";
-             
+                    document.getElementById('mall').innerHTML = mall + '</br>' + parseFloat(mall_distance.toFixed(3)) + "Km away";
                 
             });
         }
@@ -510,6 +509,15 @@
             window.location.href = newUrl; // Apply the filters
         });
     });
+
+    // Get all elements with value="2017" or value="ANG MO KIO"
+    var elements = document.querySelectorAll('[value="2017"], [value="ANG MO KIO"]');
+
+    // Loop through each element and trigger a click event
+    elements.forEach(function(element) {
+        element.click();
+    });
+
     
     
     </script>

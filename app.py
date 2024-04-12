@@ -34,20 +34,22 @@ def amenities1():
 
 @app.route('/', methods = ['GET'])
 def map():
-    with open('./data/mapdata.json', 'r') as f:
-      fileData = json.load(f)
-      f.close()
+    # Read the CSV file into a Pandas DataFrame
+    df = pd.read_csv('./data/HDB_FULL_INFO_WITH_AMENITIES.csv')
+
+    # Convert the DataFrame to an array of JSON objects
+    fileData = df.to_dict(orient='records')
     min_price = float(request.args.get('min_price', default = 160000.0))
     max_price = float(request.args.get('max_price', default = 1185000.0))
     selected_year = request.args.get('years', default='2017')
-    town = request.args.get('town', default=None)
+    selected_town = request.args.get('town', default='ANG MO KIO')
     storey_range = request.args.get('storeyRange', default=None)
     flat_model = request.args.get('flatModel', default=None)
     filtered_data = []
     for item in fileData:
         item_year = item['month'].split("-")[0]         
         if ((not selected_year or item_year == selected_year) and
-            (not town or item['town'] == town) and
+            (not selected_town or item['town'] == selected_town) and
             (not storey_range or item['storey_range'] == storey_range) and
             (not flat_model or item['flat_model'] == flat_model) and
             min_price <= float(item['resale_price']) <= max_price):
@@ -69,7 +71,7 @@ def map():
        'Model A2']
     years = [ 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
     return render_template('map.html', fileData=filtered_data, towns=towns, storey_ranges=storey_ranges, flat_models=flat_models, 
-                           town = town, storey_range =storey_range, flat_model=flat_model, years = years, min_price =min_price,
+                           selected_town = selected_town, storey_range =storey_range, flat_model=flat_model, years = years, min_price =min_price,
                            max_price =max_price, selected_year=selected_year)
 
 
