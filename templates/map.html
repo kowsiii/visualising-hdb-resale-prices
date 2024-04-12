@@ -241,6 +241,12 @@
         </select>
         
         <select id="town" name="town">
+            {% if selected_town == '' or selected_town == None%}
+            <option class = "aligns" value="Select Town" disabled selected>Select Town</option>
+            {% else %}
+            <option class = "aligns" value="" disabled selected>{{selected_town}}</option>
+            {%endif%}
+
             {% for town in towns %}
             {% if town == '' %}
                 <option value="" class = "aligns">Select Town</option>
